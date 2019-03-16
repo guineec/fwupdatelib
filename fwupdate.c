@@ -1,26 +1,32 @@
 #include "fwupdate.h"
 #include <stdint.h>
-#include <stdio.h>
 #include <math.h>
 
-uint8_t get_opcode(uint8_t *pkt) {
+// Functions for extracting from downlink packets
+uint8_t get_opcode(uint8_t *pkt)
+{
   // Get the first 4 bits of the first byte and convert to decimal
   uint8_t acc = 0;
-  for(uint8_t i = 0; i < 4; i++) {
+  for (uint8_t i = 0; i < 4; i++)
+  {
     uint8_t bit = (pkt[0] >> (4 + i)) & 1;
     acc += (bit * (pow(2, i)));
   }
   return acc;
 }
 
-uint8_t get_index(uint8_t *pkt) {
+uint8_t get_index(uint8_t *pkt)
+{
+  // Index is easy, just the 3rd byte of the DL packet
   return pkt[2];
 }
 
-unsigned short get_seq_num(uint8_t *pkt) {
+unsigned short get_seq_num(uint8_t *pkt)
+{
   // Extract the last 4 bits of the first byte as decimal
   unsigned short acc = 0;
-  for(uint8_t i = 0; i < 4; i++) {
+  for (uint8_t i = 0; i < 4; i++)
+  {
     uint8_t bit = pkt[0] << (4 + i);
     bit = bit >> 7;
     acc += bit * (pow(2, (11 - i)));
@@ -30,5 +36,27 @@ unsigned short get_seq_num(uint8_t *pkt) {
   return acc;
 }
 
+// Functions for creating uplink packets
+void put_opcode(uint8_t *tx_buff, uint8_t code)
+{
+  uint8_t byte = tx_buff[0];
+  code = code << 4;
+  tx_buff[0] |= code;
+}
 
+void put_seq_num(uint8_t *tx_buff, unsigned short seq_num)
+{
+  uint8_t first_part = seq_num >> 8;
+  tx_buff[0] |= first_part;
+  // AND out the opcode
+  uint8_t second_part = seq_num & 255;
+  tx_buff[1] = second_part;
+}
 
+void make_uplink_packet(uint8_t *tx_buff, uint8_t opcode, 
+                        unsigned short sequence_number, uint8_t data)
+{
+  put_opcode(tx_buff, opcode);
+  put_seq_num(tx_buff, sequence_number);
+  tx_buff[2] = data;
+}
