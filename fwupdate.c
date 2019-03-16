@@ -39,7 +39,6 @@ unsigned short get_seq_num(uint8_t *pkt)
 // Functions for creating uplink packets
 void put_opcode(uint8_t *tx_buff, uint8_t code)
 {
-  uint8_t byte = tx_buff[0];
   code = code << 4;
   tx_buff[0] |= code;
 }
