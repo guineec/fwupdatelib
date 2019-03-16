@@ -53,7 +53,7 @@ void put_seq_num(uint8_t *tx_buff, unsigned short seq_num)
   tx_buff[1] = second_part;
 }
 
-void make_uplink_packet(uint8_t *tx_buff, uint8_t opcode, 
+void make_uplink_packet(uint8_t *tx_buff, uint8_t opcode,
                         unsigned short sequence_number, uint8_t data)
 {
   put_opcode(tx_buff, opcode);
