@@ -3,17 +3,6 @@
 #include <stdio.h>
 #include <math.h>
 
-int main(int argc, char **argv) {
-  uint8_t *buffer = calloc(sizeof(uint8_t) * 3, 0);
-  buffer[0] = 2;
-  buffer[1] = 34;
-  buffer[2] = 1;
-  printf("OPCODE: %d\n", get_opcode(buffer));
-  printf("INDEX: %d\n", get_index(buffer));
-  printf("SEQ NUM: %d\n", get_seq_num(buffer));
-  return 0;
-}
-
 uint8_t get_opcode(uint8_t *pkt) {
   // Get the first 4 bits of the first byte and convert to decimal
   uint8_t acc = 0;
