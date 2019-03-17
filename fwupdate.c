@@ -57,7 +57,7 @@ void make_uplink_packet(uint8_t *tx_buff, uint8_t opcode,
 {
   put_opcode(tx_buff, opcode);
   put_seq_num(tx_buff, sequence_number);
-  for(uint8_t i = 0; i < data_size; i++) {
-    tx_buff[2 + i] = data[i];
-  }
+  for (uint8_t i = 0; i < data_size; i++) {
+			tx_buff[2 + i] = data[i];
+	}
 }
