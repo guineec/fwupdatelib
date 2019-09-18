@@ -1,7 +1,6 @@
 #include "fwupdate.h"
 #include <stdint.h>
 #include <math.h>
-#include <stdio.h>
 
 // Functions for extracting from downlink packets
 uint8_t get_opcode(uint8_t *pkt)
